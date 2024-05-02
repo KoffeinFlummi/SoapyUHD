@@ -274,8 +274,8 @@ public:
 
         //fill in the command
         uhd::stream_cmd_t cmd(mode);
-        cmd.stream_now = (flags & SOAPY_SDR_HAS_TIME) == 0;
-        cmd.time_spec = uhd::time_spec_t::from_ticks(timeNs, 1e9);
+        cmd.stream_now = (flags & SOAPY_SDR_HAS_TIME) == 0 && (stream->rx.get()->get_num_channels() == 1);
+        cmd.time_spec = _dev->get_time_now() + uhd::time_spec_t(0.1);
         cmd.num_samps = numElems;
 
         //issue command
